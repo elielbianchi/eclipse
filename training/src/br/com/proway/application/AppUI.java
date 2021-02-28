@@ -1,10 +1,11 @@
 package br.com.proway.application;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import br.com.proway.services.*;
 
-public class AppSupport {
+import br.com.proway.domain.*;
+import br.com.proway.service.*;
+
+public class AppUI {
 	/**
 	 * This class has every support method needed to execute and manipulate the
 	 * objects from the classes Person, Room, and Coffee, in order to perform the
@@ -16,11 +17,23 @@ public class AppSupport {
 	 * @author Eliel Bianchi
 	 * @version 1.0
 	 */
-	private static ArrayList<Person> people = new ArrayList<Person>();
-	private static ArrayList<Room> rooms = new ArrayList<Room>();
-	private static ArrayList<Coffee> coffees = new ArrayList<Coffee>();
+	private RoomService roomService;
+	private CoffeeService coffeeService;
+	private PersonService personService;
 	static Scanner sc = new Scanner(System.in);
 
+	public AppUI(CoffeeService coffeeService) {
+		this.coffeeService = coffeeService;
+	}
+	
+	public AppUI(PersonService personService) {
+		this.personService = personService;
+	}
+	
+	public AppUI(RoomService roomService) {
+		this.roomService = roomService;
+	}
+	
 	public static void printMenu() {
 		/**
 		 * This method prints the initial menu to the user. The user has to press the
@@ -58,7 +71,7 @@ public class AppSupport {
 		return read;
 	}
 
-	public static boolean chooseOption(String option) {
+	public boolean chooseOption(String option) {
 		/**
 		 * A boolean method used to check if the user wants to close the program or
 		 * continue performing actions. The actions match with the numbers from the
@@ -111,7 +124,7 @@ public class AppSupport {
 		}
 	}
 
-	public static void addPerson() {
+	public void addPerson() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
 		 * inputs to the constructor of the class Person. After created the object of
@@ -124,11 +137,10 @@ public class AppSupport {
 		System.out.println("Insira o sobrenome da pessoa a ser adicionada: ");
 		System.out.print("Sobrenome: ");
 		String lastName = readString();
-		Person person = new Person(firstName, lastName);
-		people.add(person);
+		personService.addPersonService(firstName, lastName);
 	}
 
-	public static void addRoom() {
+	public void addRoom() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
 		 * inputs to the constructor of the class Room. After created the object of the
@@ -141,18 +153,17 @@ public class AppSupport {
 		System.out.println("Insira a capacidade da sala de treinamento a ser adicionada.");
 		System.out.print("Capacidade: ");
 		int capacity = readInt();
-		Room room = new Room(name, capacity);
-		rooms.add(room);
+		roomService.addRoomService(name, capacity);
 	}
 
-	public static void addCoffee() {
+	public void addCoffee() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
 		 * inputs to the constructor of the class Coffee. After created the object of
 		 * the class Coffee, it is added to the ArrayList 'coffees' instanced at the
 		 * class AppSupport.
 		 */
-		if (coffees.size() < 2) {
+		if (coffeeService.getCoffees().size() < 2) {
 			System.out.println("Lembre-se que você deve inserir dois espaços no total.");
 			System.out.println("Insira o nome do espaço de café a ser adicionado.");
 			System.out.print("Nome: ");
@@ -160,8 +171,7 @@ public class AppSupport {
 			System.out.println("Insira a capacidade do espaço de café a ser adicionado.");
 			System.out.print("Capacidade: ");
 			int capacity = readInt();
-			Coffee coffee = new Coffee(name, capacity);
-			coffees.add(coffee);
+			coffeeService.addCoffeeService(name, capacity);
 		} else {
 			System.out.println("São necessários dois espaços de café e você já inseriu os dois.");
 			System.out.println("Pressione a tecla 'Enter' para retornar ao Menu.");
@@ -169,7 +179,7 @@ public class AppSupport {
 		}
 	}
 
-	public static void checkCapacity() {
+	public void checkCapacity() {
 		/**
 		 * This method is called by the chooseOption method. It executes some logical
 		 * blocks based on the current data received. These verifications are useful to
@@ -177,13 +187,13 @@ public class AppSupport {
 		 * the rooms or spaces. If the data are right, this method executes the
 		 * assignPeople method.
 		 */
-		int nPeople = people.size();
+		int nPeople = personService.getPeople().size();
 		int roomsCapacity = 0;
 		int coffeesCapacity = 0;
-		for (Room room : rooms) {
+		for (Room room : roomService.getRooms()) {
 			roomsCapacity = roomsCapacity + room.getCapacity();
 		}
-		for (Coffee coffee : coffees) {
+		for (Coffee coffee : coffeeService.getCoffees()) {
 			coffeesCapacity = coffeesCapacity + coffee.getCapacity();
 		}
 		if (nPeople == 0) {
@@ -202,26 +212,26 @@ public class AppSupport {
 		}
 	}
 
-	public static void assignPeople() {
+	public void assignPeople() {
 		/**
 		 * This method is called by the checkCapacity method. Using some counter
 		 * variables, it takes each Person object at the people ArrayList and places
 		 * each 'round' one person in each room for the First Stage. After that, the
 		 * method calls the roomChangeRules and the assignCoffee methods.
 		 */
-		int roomsSize = rooms.size();
+		int roomsSize = roomService.getRooms().size();
 		int counter = 0;
 		int nRooms = 0;
 		int round = 0;
 		int inverter = 0;
-		for (Person person : people) {
+		for (Person person : personService.getPeople()) {
 			nRooms = counter % roomsSize;
 			round = counter / roomsSize;
 			inverter = roomsSize - nRooms - 1;
-			rooms.get(nRooms).setFirstStage(fullName(person));
-			person.setRoomFirstStage(rooms.get(nRooms).getName());
-			roomChangeRules(person, round, nRooms, inverter);
-			assignCoffee(person, counter);
+			roomService.getRooms().get(nRooms).setFirstStage(Person.fullName(person));
+			person.setRoomFirstStage(roomService.getRooms().get(nRooms).getName());
+			roomService.roomChangeRules(person, round, nRooms, inverter);
+			coffeeService.assignCoffee(person, counter);
 			counter++;
 		}
 		System.out.println("");
@@ -230,46 +240,7 @@ public class AppSupport {
 		readString();
 	}
 
-	public static String fullName(Person person) {
-		/**
-		 * Method to receive the attributes firstName and lastName, using the getters
-		 * from Person class, and returning them as a unique String.
-		 */
-		return person.getFirstName() + " " + person.getLastName();
-	}
-
-	public static void roomChangeRules(Person person, int round, int nRooms, int inverter) {
-		/**
-		 * This method is called by the assingPeople method. It receives the counters
-		 * and each person object from the previous method. This method is used to
-		 * assign the people from odd 'rounds' to different rooms at the Second Stage.
-		 * This is useful to respect the rules of the program, where at least 50% of
-		 * people need to change the room from the First Stage to the Second Stage.
-		 */
-		if (round % 2 == 0) {
-			rooms.get(inverter).setSecondStage(fullName(person));
-			person.setRoomSecondStage(rooms.get(inverter).getName());
-		} else {
-			rooms.get(nRooms).setSecondStage(fullName(person));
-			person.setRoomSecondStage(rooms.get(nRooms).getName());
-		}
-	}
-
-	public static void assignCoffee(Person person, int counter) {
-		/**
-		 * This method is called the assingPeople method. It receives the counter and
-		 * each person's object from the previous method. This method is used to assign
-		 * the people to one of the two Coffee Spaces, placing each time one person in
-		 * each space.
-		 */
-		int nCoffees = counter % 2;
-		person.setCoffeeFirstStage(coffees.get(nCoffees).getName());
-		coffees.get(nCoffees).setFirstStage(fullName(person));
-		person.setCoffeeSecondStage(coffees.get(nCoffees).getName());
-		coffees.get(nCoffees).setSecondStage(fullName(person));
-	}
-
-	public static void personQuery() {
+	public void personQuery() {
 		System.out.println("Informe o primeiro nome da pessoa a ser consultada.");
 		System.out.print("Nome: ");
 		String firstName = readString();
@@ -279,9 +250,9 @@ public class AppSupport {
 		personSearch(firstName, lastName);
 	}
 
-	public static void personSearch(String firstName, String lastName) {
+	public void personSearch(String firstName, String lastName) {
 		boolean find = false;
-		for (Person person : people) {
+		for (Person person : personService.getPeople()) {
 			if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
 				find = true;
 				System.out.println("");
@@ -305,16 +276,16 @@ public class AppSupport {
 		}
 	}
 
-	public static void roomQuery() {
+	public void roomQuery() {
 		System.out.println("Informe o nome da sala a ser consultada.");
 		System.out.print("Nome: ");
 		String name = readString();
 		roomSearch(name);
 	}
 
-	public static void roomSearch(String name) {
+	public void roomSearch(String name) {
 		boolean find = false;
-		for (Room room : rooms) {
+		for (Room room : roomService.getRooms()) {
 			if (room.getName().equals(name)) {
 				find = true;
 				System.out.println("");
@@ -344,16 +315,16 @@ public class AppSupport {
 		}
 	}
 
-	public static void coffeeQuery() {
+	public void coffeeQuery() {
 		System.out.println("Informe o nome do espaço de intervalo a ser consultado.");
 		System.out.print("Nome: ");
 		String name = readString();
 		coffeeSearch(name);
 	}
 
-	public static void coffeeSearch(String name) {
+	public void coffeeSearch(String name) {
 		boolean find = false;
-		for (Coffee coffee : coffees) {
+		for (Coffee coffee : coffeeService.getCoffees()) {
 			if (coffee.getName().equals(name)) {
 				find = true;
 				System.out.println("");
@@ -383,7 +354,7 @@ public class AppSupport {
 		}
 	}
 
-	public static void deleteMenu() {
+	public void deleteMenu() {
 		System.out.println("Para deletar uma pessoa cadastrada, pressione '1'.");
 		System.out.println("Para deletar uma sala de treinamento cadastrada, pressione '2'.");
 		System.out.println("Para deletar uma sala de café cadastrada, pressione '3'.");
@@ -393,7 +364,7 @@ public class AppSupport {
 
 	}
 
-	public static void deleteChoice(String choice) {
+	public void deleteChoice(String choice) {
 		switch (choice) {
 		case "1":
 			System.out.println("");
@@ -416,18 +387,18 @@ public class AppSupport {
 		}
 	}
 
-	public static void deletePerson() {
+	public void deletePerson() {
 		System.out.println("Informe o primeiro nome da pessoa a ser deletada.");
 		System.out.print("Nome: ");
 		String firstName = readString();
 		System.out.println("Informe o sobrenome da pessoa a ser deletada.");
 		System.out.print("Sobrenome: ");
 		String lastName = readString();
-		for (Person person : people) {
+		for (Person person : personService.getPeople()) {
 			if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
 				System.out.println("");
-				System.out.println("Deletando o cadastro de " + fullName(person));
-				people.remove(person);
+				System.out.println("Deletando o cadastro de " + Person.fullName(person));
+				personService.getPeople().remove(person);
 				System.out.println("");
 				System.out.println(
 						"Por ter deletado uma pessoa, caso já tenha feito a distruição de salas, deverá repetir a ação.");
@@ -440,15 +411,15 @@ public class AppSupport {
 		}
 	}
 
-	public static void deleteRoom() {
+	public void deleteRoom() {
 		System.out.println("Informe o nome da sala de treinamento a ser deletada.");
 		System.out.print("Nome: ");
 		String name = readString();
-		for (Room room : rooms) {
+		for (Room room : roomService.getRooms()) {
 			if (room.getName().equals(name)) {
 				System.out.println("");
 				System.out.println("Deletando o cadastro da sala " + room.getName());
-				rooms.remove(room);
+				roomService.getRooms().remove(room);
 				System.out.println("");
 				System.out.println(
 						"Por ter deletado uma sala, caso já tenha feito a distruição de salas, deverá repetir a ação.");
@@ -461,15 +432,15 @@ public class AppSupport {
 		}
 	}
 
-	public static void deleteCoffee() {
+	public void deleteCoffee() {
 		System.out.println("Informe o nome do espaço de intervalo a ser deletado.");
 		System.out.print("Nome: ");
 		String name = readString();
-		for (Coffee coffee : coffees) {
+		for (Coffee coffee : coffeeService.getCoffees()) {
 			if (coffee.getName().equals(name)) {
 				System.out.println("");
 				System.out.println("Deletando o cadastro do espaço " + coffee.getName());
-				coffees.remove(coffee);
+				coffeeService.getCoffees().remove(coffee);
 				System.out.println("");
 				System.out.println(
 						"Por ter deletado um espaço de intervalo, caso já tenha feito a distruição de salas, deverá repetir a ação.");

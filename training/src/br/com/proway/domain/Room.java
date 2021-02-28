@@ -1,4 +1,4 @@
-package br.com.proway.services;
+package br.com.proway.domain;
 
 import java.util.ArrayList;
 

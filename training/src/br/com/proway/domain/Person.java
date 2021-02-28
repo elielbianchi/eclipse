@@ -1,4 +1,4 @@
-package br.com.proway.services;
+package br.com.proway.domain;
 
 public class Person {
 	private String firstName;
@@ -55,5 +55,13 @@ public class Person {
 
 	public void setCoffeeSecondStage(String coffeeSecondStage) {
 		this.coffeeSecondStage = coffeeSecondStage;
+	}
+	
+	public static String fullName(Person person) {
+		/**
+		 * Method to receive the attributes firstName and lastName, using the getters
+		 * from Person class, and returning them as a unique String.
+		 */
+		return person.getFirstName() + " " + person.getLastName();
 	}
 }
