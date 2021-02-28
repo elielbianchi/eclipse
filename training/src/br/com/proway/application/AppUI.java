@@ -8,11 +8,13 @@ import br.com.proway.service.*;
 public class AppUI {
 	/**
 	 * This class has every support method needed to execute and manipulate the
-	 * objects from the classes Person, Room, and Coffee, in order to perform the
-	 * training application. For that, it initializes an ArrayList of each object.
-	 * Also, it creates the Scanner variable used in the methods to get input from
-	 * the user. In order to be used in Brazil, by everyone, the messages printed to
-	 * the user were written in Portuguese.
+	 * objects from classes at service and domain paths, in order to perform the
+	 * training application. For that, it initializes objects of the classes from
+	 * the service path. In this way, the Main class can construct the AppUI object
+	 * that is used to work with all methods from this project. Also, it creates the
+	 * Scanner variable used in the methods to get input from the user. In order to
+	 * be used in Brazil, by everyone, the messages printed to the user were written
+	 * in Portuguese.
 	 * 
 	 * @author Eliel Bianchi
 	 * @version 1.0
@@ -126,9 +128,8 @@ public class AppUI {
 	public void addPerson() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
-		 * inputs to the constructor of the class Person. After created the object of
-		 * the class Person, it is added to the ArrayList 'people' instanced at the
-		 * class AppSupport.
+		 * inputs to the constructor of the class Person. Lastly, it calls the method
+		 * addPersonService from PersonService class.
 		 */
 		System.out.println("Insira o primeiro nome da pessoa a ser adicionada.");
 		System.out.print("Nome: ");
@@ -142,9 +143,8 @@ public class AppUI {
 	public void addRoom() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
-		 * inputs to the constructor of the class Room. After created the object of the
-		 * class Room, it is added to the ArrayList 'rooms' instanced at the class
-		 * AppSupport.
+		 * inputs to the constructor of the class Room. Lastly, it calls the method
+		 * addRoomService from RoomService class.
 		 */
 		System.out.println("Insira o nome da sala de treinamento a ser adicionada.");
 		System.out.print("Nome: ");
@@ -158,9 +158,8 @@ public class AppUI {
 	public void addCoffee() {
 		/**
 		 * This method is called by the chooseOption method. It asks the user for the
-		 * inputs to the constructor of the class Coffee. After created the object of
-		 * the class Coffee, it is added to the ArrayList 'coffees' instanced at the
-		 * class AppSupport.
+		 * inputs to the constructor of the class Coffee. Lastly, it calls the method
+		 * addCoffeeService from CoffeeService class.
 		 */
 		if (coffeeService.getCoffees().size() < 2) {
 			System.out.println("Lembre-se que você deve inserir dois espaços no total.");
@@ -240,6 +239,11 @@ public class AppUI {
 	}
 
 	public void personQuery() {
+		/**
+		 * This method is called by the chooseOption method. This method is used to
+		 * receive the arguments from user input and calls a method to perform the
+		 * search of person full name.
+		 */
 		System.out.println("Informe o primeiro nome da pessoa a ser consultada.");
 		System.out.print("Nome: ");
 		String firstName = readString();
@@ -250,6 +254,12 @@ public class AppUI {
 	}
 
 	public void personSearch(String firstName, String lastName) {
+		/**
+		 * This method is called by personQuery method, and search object by object at
+		 * ArrayList people from PersonService class. If the search matches with the
+		 * people data, so the person information is printed. In case that the search
+		 * does not match, the method returns the message that no person was found.
+		 */
 		boolean find = false;
 		for (Person person : personService.getPeople()) {
 			if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
@@ -276,6 +286,11 @@ public class AppUI {
 	}
 
 	public void roomQuery() {
+		/**
+		 * This method is called by the chooseOption method. This method is used to
+		 * receive the arguments from user input and calls a method to perform the
+		 * search of room name.
+		 */
 		System.out.println("Informe o nome da sala a ser consultada.");
 		System.out.print("Nome: ");
 		String name = readString();
@@ -283,6 +298,12 @@ public class AppUI {
 	}
 
 	public void roomSearch(String name) {
+		/**
+		 * This method is called by roomQuery method, and search object by object at
+		 * ArrayList rooms from RoomService class. If the search matches with the rooms
+		 * data, so the room information is printed. In case that the search does not
+		 * match, the method returns the message that no room was found.
+		 */
 		boolean find = false;
 		for (Room room : roomService.getRooms()) {
 			if (room.getName().equals(name)) {
@@ -315,6 +336,11 @@ public class AppUI {
 	}
 
 	public void coffeeQuery() {
+		/**
+		 * This method is called by the chooseOption method. This method is used to
+		 * receive the arguments from user input and calls a method to perform the
+		 * search of coffee space name.
+		 */
 		System.out.println("Informe o nome do espaço de intervalo a ser consultado.");
 		System.out.print("Nome: ");
 		String name = readString();
@@ -322,6 +348,13 @@ public class AppUI {
 	}
 
 	public void coffeeSearch(String name) {
+		/**
+		 * This method is called by coffeeQuery method, and search object by object at
+		 * ArrayList coffees from CoffeeService class. If the search matches with the
+		 * coffee spaces data, so the coffee space information is printed. In case that
+		 * the search does not match, the method returns the message that no coffee
+		 * space was found.
+		 */
 		boolean find = false;
 		for (Coffee coffee : coffeeService.getCoffees()) {
 			if (coffee.getName().equals(name)) {
@@ -354,6 +387,12 @@ public class AppUI {
 	}
 
 	public void printAllObjects() {
+		/**
+		 * This method is called by the chooseOption method. It prints out all the
+		 * people, rooms, and coffee spaces already added. It goes object by object at
+		 * each ArrayList and shows in a formatted way the names. For rooms and coffee
+		 * spaces, it also shows the capacity.
+		 */
 		int pos = 1;
 		System.out.println("Lista de pessoas cadastradas:");
 		for (Person person : personService.getPeople()) {
@@ -379,6 +418,12 @@ public class AppUI {
 	}
 
 	public void deleteMenu() {
+		/**
+		 * This method is called by the chooseOption method. It shows the option to
+		 * delete the objects from the lists of people, rooms, and coffee spaces. After
+		 * the read input from the user, the method calls another method to uses the
+		 * read choice.
+		 */
 		System.out.println("Para deletar uma pessoa cadastrada, pressione '1'.");
 		System.out.println("Para deletar uma sala de treinamento cadastrada, pressione '2'.");
 		System.out.println("Para deletar uma sala de café cadastrada, pressione '3'.");
@@ -389,6 +434,12 @@ public class AppUI {
 	}
 
 	public void deleteChoice(String choice) {
+		/**
+		 * This method is called by the deleteMenu method, using the choice read. The
+		 * method compares the option typed by the user, and performs the desired
+		 * method. If the entry is not valid, the user is informed and the program goes
+		 * back to the main printMenu.
+		 */
 		switch (choice) {
 		case "1":
 			System.out.println("");
@@ -412,6 +463,14 @@ public class AppUI {
 	}
 
 	public void deletePerson() {
+		/**
+		 * This method is called by the deleteChoice menu. It deletes the person desired
+		 * if the person is on the database. For that, the method receives the input
+		 * from the user, and search object by object at people ArrayList from
+		 * PersonService. When the person is found, the method erases the person from
+		 * the list. In case that the name is not found, a message is informed to the
+		 * user and the program goes back to the main printMenu.
+		 */
 		System.out.println("Informe o primeiro nome da pessoa a ser deletada.");
 		System.out.print("Nome: ");
 		String firstName = readString();
@@ -436,6 +495,14 @@ public class AppUI {
 	}
 
 	public void deleteRoom() {
+		/**
+		 * This method is called by the deleteChoice menu. It deletes the room desired
+		 * if the room is on the database. For that, the method receives the input from
+		 * the user, and search object by object at rooms ArrayList from RoomService.
+		 * When the room is found, the method erases the rooms from the list. In case
+		 * that the name is not found, a message is informed to the user and the program
+		 * goes back to the main printMenu.
+		 */
 		System.out.println("Informe o nome da sala de treinamento a ser deletada.");
 		System.out.print("Nome: ");
 		String name = readString();
@@ -457,6 +524,14 @@ public class AppUI {
 	}
 
 	public void deleteCoffee() {
+		/**
+		 * This method is called by the deleteChoice menu. It deletes the coffee space
+		 * desired if the space is on the database. For that, the method receives the
+		 * input from the user, and search object by object at coffees ArrayList from
+		 * CoffeeService. When the coffee space is found, the method erases the spaces
+		 * from the list. In case that the name is not found, a message is informed to
+		 * the user and the program goes back to the main printMenu.
+		 */
 		System.out.println("Informe o nome do espaço de intervalo a ser deletado.");
 		System.out.print("Nome: ");
 		String name = readString();

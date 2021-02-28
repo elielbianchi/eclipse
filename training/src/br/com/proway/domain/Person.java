@@ -26,34 +26,63 @@ public class Person {
 	}
 
 	public String getRoomFirstStage() {
+		/**
+		 * It returns the room that a person goes attend on the first stage of training.
+		 */
 		return roomFirstStage;
 	}
 
 	public void setRoomFirstStage(String roomFirstStage) {
+		/**
+		 * It sets the room that a person goes attend on the first stage of training.
+		 */
 		this.roomFirstStage = roomFirstStage;
 	}
 
 	public String getRoomSecondStage() {
+		/**
+		 * It returns the room that a person goes attend on the second stage of
+		 * training.
+		 */
 		return roomSecondStage;
 	}
 
 	public void setRoomSecondStage(String roomSecondStage) {
+		/**
+		 * It sets the room that a person goes attend on the second stage of training.
+		 */
 		this.roomSecondStage = roomSecondStage;
 	}
 
 	public String getCoffeeFirstStage() {
+		/**
+		 * It returns the coffee space that a person goes attend on the first stage of
+		 * training.
+		 */
 		return coffeeFirstStage;
 	}
 
 	public void setCoffeeFirstStage(String coffeeFirstStage) {
+		/**
+		 * It sets the coffee space that a person goes attend on the first stage of
+		 * training.
+		 */
 		this.coffeeFirstStage = coffeeFirstStage;
 	}
 
 	public String getCoffeeSecondStage() {
+		/**
+		 * It returns the coffee space that a person goes attend on the second stage of
+		 * training.
+		 */
 		return coffeeSecondStage;
 	}
 
 	public void setCoffeeSecondStage(String coffeeSecondStage) {
+		/**
+		 * It sets the coffee space that a person goes attend on the second stage of
+		 * training.
+		 */
 		this.coffeeSecondStage = coffeeSecondStage;
 	}
 
