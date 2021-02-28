@@ -43,7 +43,8 @@ public class AppUI {
 		System.out.println("Pressione '5' para consultar uma pessoa já cadastrada.");
 		System.out.println("Pressione '6' para consultar uma sala de treinamento já cadastrada.");
 		System.out.println("Pressione '7' para consultar um espaço de café já cadastrado.");
-		System.out.println("Pressione '8' para deletar uma pessoa, sala ou espaço já cadastrados.");
+		System.out.println("Pressione '8' para visualizar as listas de pessoas, salas e espaços cadastrados.");
+		System.out.println("Pressione '9' para deletar uma pessoa, sala ou espaço já cadastrados.");
 		System.out.println("Pressione '0' para encerrar o programa.");
 		System.out.print("Opção escolhida: ");
 	}
@@ -102,6 +103,10 @@ public class AppUI {
 			coffeeQuery();
 			return true;
 		case "8":
+			System.out.println("");
+			printAllObjects();
+			return true;
+		case "9":
 			System.out.println("");
 			deleteMenu();
 			return true;
@@ -222,7 +227,7 @@ public class AppUI {
 			nRooms = counter % roomsSize;
 			round = counter / roomsSize;
 			inverter = roomsSize - nRooms - 1;
-			roomService.getRooms().get(nRooms).setFirstStage(Person.fullName(person));
+			roomService.getRooms().get(nRooms).setFirstStage(person.fullName(person));
 			person.setRoomFirstStage(roomService.getRooms().get(nRooms).getName());
 			roomService.roomChangeRules(person, round, nRooms, inverter);
 			coffeeService.assignCoffee(person, counter);
@@ -348,6 +353,31 @@ public class AppUI {
 		}
 	}
 
+	public void printAllObjects() {
+		int pos = 1;
+		System.out.println("Lista de pessoas cadastradas:");
+		for (Person person : personService.getPeople()) {
+			System.out.println(pos + "- " + person.fullName(person) + ".");
+			pos++;
+		}
+		pos = 1;
+		System.out.println("Lista de salas de treinamento cadastradas:");
+		for (Room room : roomService.getRooms()) {
+			System.out.println(pos + "- " + room.getName() + ". Capacidade: " + room.getCapacity() + ".");
+			pos++;
+		}
+
+		pos = 1;
+		System.out.println("Lista de espaços de intervalo cadastrados:");
+		for (Coffee coffee : coffeeService.getCoffees()) {
+			System.out.println(pos + "- " + coffee.getName() + ". Capacidade: " + coffee.getCapacity() + ".");
+			pos++;
+		}
+		System.out.println("");
+		System.out.println("Pressione a tecla 'Enter' para voltar ao menu.");
+		readString();
+	}
+
 	public void deleteMenu() {
 		System.out.println("Para deletar uma pessoa cadastrada, pressione '1'.");
 		System.out.println("Para deletar uma sala de treinamento cadastrada, pressione '2'.");
@@ -391,7 +421,7 @@ public class AppUI {
 		for (Person person : personService.getPeople()) {
 			if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
 				System.out.println("");
-				System.out.println("Deletando o cadastro de " + Person.fullName(person));
+				System.out.println("Deletando o cadastro de " + person.fullName(person));
 				personService.getPeople().remove(person);
 				System.out.println("");
 				System.out.println(

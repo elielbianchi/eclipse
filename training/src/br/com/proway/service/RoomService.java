@@ -16,12 +16,12 @@ public class RoomService {
 	public void setRooms(ArrayList<Room> rooms) {
 		this.rooms = rooms;
 	}
-	
+
 	public void addRoomService(String name, int capacity) {
 		Room room = new Room(name, capacity);
 		rooms.add(room);
 	}
-	
+
 	public void roomChangeRules(Person person, int round, int nRooms, int inverter) {
 		/**
 		 * This method is called by the assingPeople method. It receives the counters
@@ -31,10 +31,10 @@ public class RoomService {
 		 * people need to change the room from the First Stage to the Second Stage.
 		 */
 		if (round % 2 == 0) {
-			getRooms().get(inverter).setSecondStage(Person.fullName(person));
+			getRooms().get(inverter).setSecondStage(person.fullName(person));
 			person.setRoomSecondStage(getRooms().get(inverter).getName());
 		} else {
-			getRooms().get(nRooms).setSecondStage(Person.fullName(person));
+			getRooms().get(nRooms).setSecondStage(person.fullName(person));
 			person.setRoomSecondStage(getRooms().get(nRooms).getName());
 		}
 	}

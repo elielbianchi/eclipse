@@ -15,12 +15,12 @@ public class CoffeeService {
 	public void setCoffees(ArrayList<Coffee> coffees) {
 		this.coffees = coffees;
 	}
-	
+
 	public void addCoffeeService(String name, int capacity) {
 		Coffee coffee = new Coffee(name, capacity);
 		coffees.add(coffee);
 	}
-	
+
 	public void assignCoffee(Person person, int counter) {
 		/**
 		 * This method is called the assingPeople method. It receives the counter and
@@ -30,8 +30,8 @@ public class CoffeeService {
 		 */
 		int nCoffees = counter % 2;
 		person.setCoffeeFirstStage(getCoffees().get(nCoffees).getName());
-		getCoffees().get(nCoffees).setFirstStage(Person.fullName(person));
+		getCoffees().get(nCoffees).setFirstStage(person.fullName(person));
 		person.setCoffeeSecondStage(getCoffees().get(nCoffees).getName());
-		getCoffees().get(nCoffees).setSecondStage(Person.fullName(person));
+		getCoffees().get(nCoffees).setSecondStage(person.fullName(person));
 	}
 }
