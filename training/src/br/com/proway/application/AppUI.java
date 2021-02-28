@@ -22,18 +22,12 @@ public class AppUI {
 	private PersonService personService;
 	static Scanner sc = new Scanner(System.in);
 
-	public AppUI(CoffeeService coffeeService) {
+	public AppUI(CoffeeService coffeeService, PersonService personService, RoomService roomService) {
 		this.coffeeService = coffeeService;
-	}
-	
-	public AppUI(PersonService personService) {
 		this.personService = personService;
-	}
-	
-	public AppUI(RoomService roomService) {
 		this.roomService = roomService;
 	}
-	
+
 	public static void printMenu() {
 		/**
 		 * This method prints the initial menu to the user. The user has to press the
