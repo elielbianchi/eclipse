@@ -40,5 +40,5 @@ That is important to mention that this version does not have unit tests and data
 ### Author
 
 Eliel Bianchi
-Contato: elielbianchi@hotmail.com
+E-mail: elielbianchi@hotmail.com
 LinkedIn: linkedin.in/elielbianchi
